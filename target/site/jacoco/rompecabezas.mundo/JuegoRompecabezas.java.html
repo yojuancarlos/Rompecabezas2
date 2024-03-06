@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JuegoRompecabezas.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rompecabezas3</a> &gt; <a href="index.source.html" class="el_package">rompecabezas.mundo</a> &gt; <span class="el_source">JuegoRompecabezas.java</span></div><h1>JuegoRompecabezas.java</h1><pre class="source lang-java linenums"> /**
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * $Id: JuegoRompecabezas.java 853 2007-01-16 16:00:29Z f-vela $
+ * Universidad de los Andes (Bogotá - Colombia)
+ * Departamento de Ingeniería de Sistemas y Computación 
+ * Licenciado bajo el esquema Academic Free License version 2.1 
+ *
+ * Proyecto Cupi2 (http://cupi2.uniandes.edu.co)
+ * Ejercicio: n7_rompecabezas
+ * Autor: Manuel Muñoz - 02-Oct-2006
+ * Autor: Milena Vela - 01-Dic-2006
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+
+package rompecabezas.mundo;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+/**
+ * Clase que representa el Juego de Rompecabezas. &lt;br&gt;
+ * &lt;b&gt;inv: &lt;/b&gt; El vector de figuras ha sido inicializado. figuras != null &lt;br&gt;
+ * No hay dos figuras con el mismo nombre en el juego &lt;br&gt;
+ * El número intentos no puede se menor a cero &lt;br&gt;
+ * El número de veces que se ha jugado no puede ser menor a cero &lt;br&gt;
+ * El tiempo de juego no puede ser negativo&lt;br&gt;
+ */
+
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">public class JuegoRompecabezas</span>
+{
+    // -----------------------------------------------------------------
+    // Atributos
+    // -----------------------------------------------------------------
+
+    /**
+     * Número de rompecabezas que han sido tratados de armar.
+     */
+    private int intentos;
+
+    /**
+     * Número de figuras que han sido armadas
+     */
+    private int armadas;
+
+    /**
+     * Tiempo(milisegundos) en el que empezó el juego.
+     */
+    private long tiempoInicial;
+
+    /**
+     * Tiempo(milisegundos) en el que terminó el juego.
+     */
+    private long tiempoFinal;
+
+    /**
+     * Figuras que existen para armar
+     */
+    private ArrayList&lt;Figura&gt; figuras;
+
+    /**
+     * Figura actual que está siendo armada
+     */
+    private Figura figuraActual;
+
+    // -----------------------------------------------------------------
+    // Constructores
+    // -----------------------------------------------------------------
+
+    /**
+     * Inicializa el juego de rompecabezas. &lt;br&gt;
+     * El tiempo se inicializa en cero. &lt;br&gt;
+     * El número de intentos se inicializa en cero. &lt;br&gt;
+     * El número de figuras armadas se inicializa en cero. &lt;br&gt;
+     * Se inicializa el vector de figuras vacío. &lt;br&gt;
+     */
+    public JuegoRompecabezas( )
+<span class="fc" id="L77">    {</span>
+<span class="fc" id="L78">        intentos = 0;</span>
+<span class="fc" id="L79">        armadas = 0;</span>
+<span class="fc" id="L80">        tiempoInicial = 0;</span>
+<span class="fc" id="L81">        tiempoFinal = 0;</span>
+<span class="fc" id="L82">        figuras = new ArrayList&lt;&gt;( );</span>
+        //verificarInvariante( );
+<span class="fc" id="L84">    }</span>
+
+    // -----------------------------------------------------------------
+    // Métodos
+    // -----------------------------------------------------------------
+
+    /**
+     * Agrega la figura al vector de figuras &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt; Se agregó la figura al vector de figuras si no existe otra figura con el mismo nombre.
+     * @param f Figura que se va a adicionar al vector. f != null
+     * @return true si la figura se puedo agregar, false en caso contrario.
+     */
+    public boolean agregarFigura( Figura f )
+    {
+<span class="fc" id="L98">        int figuraBuscada = buscarFigura( f.obtenerNombre( ) );</span>
+<span class="fc" id="L99">        boolean agregado = false;</span>
+
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if( figuraBuscada == -1 )</span>
+        {
+<span class="fc" id="L103">            figuras.add( f );</span>
+<span class="fc" id="L104">            agregado = true;</span>
+        }
+<span class="fc" id="L106">        verificarInvariante( );</span>
+
+<span class="fc" id="L108">        return agregado;</span>
+    }
+
+    /**
+     * Método que es llamado cuando se quiere iniciar un juego &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt; Se inicializa el tiempo y se establece la figura actual
+     * @param figura Figura que se va a armar. figura != null
+     */
+    public void iniciarJuego( Figura figura )
+    {
+<span class="fc" id="L118">        tiempoInicial = darTiempoActual( );</span>
+<span class="fc" id="L119">        tiempoFinal = darTiempoActual( );</span>
+<span class="fc" id="L120">        figuraActual = figura;</span>
+<span class="fc" id="L121">        verificarInvariante( );</span>
+<span class="fc" id="L122">    }</span>
+
+    /**
+     * Indica si la figura se ha armado correctamente o no y actualiza los datos del juego. &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt; Si la figura esta armada se incrementa el número de figuras armadas del juego, de lo contrario se incrementa el número de intentos.
+     * @param fichasJugadas Arreglo de enteros con los identificadores de las fichas que están colocadas en la figura de juego. Diferente de null
+     */
+    public boolean terminarJuego( int[] fichasJugadas )
+    {
+<span class="fc" id="L131">        boolean armado = figuraActual.estaArmada( fichasJugadas );</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        if( armado )</span>
+        {
+<span class="fc" id="L134">            armadas++;</span>
+        }
+        else
+        {
+<span class="fc" id="L138">            intentos++;</span>
+        }
+<span class="fc" id="L140">        verificarInvariante( );</span>
+<span class="fc" id="L141">        return armado;</span>
+    }
+
+    /**
+     * Método que ordena las figuras del rompecabezas por categoría (lexicográficamente) de manera ascendente. &lt;br&gt;
+     * El método de ordenamiento utilizado es selección. &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt;El vector de figuras está ordenado por categoría de manera ascendente.
+     */
+    public void ordenarFigurasPorCategoria( )
+    {
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        for( int i = 0; i &lt; figuras.size( ) - 1; i++ )</span>
+        {
+<span class="fc" id="L153">            Figura menor = ( Figura )figuras.get( i );</span>
+<span class="fc" id="L154">            int cual = i;</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            for( int j = i + 1; j &lt; figuras.size( ); j++ )</span>
+            {
+<span class="fc" id="L157">                Figura posibleMenor = ( Figura )figuras.get( j );</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">                if( posibleMenor.compararPorCategoria( menor ) &lt; 0 )</span>
+                {
+<span class="nc" id="L160">                    menor = posibleMenor;</span>
+<span class="nc" id="L161">                    cual = j;</span>
+                }
+            }
+<span class="fc" id="L164">            Figura temp = ( Figura )figuras.get( i );</span>
+<span class="fc" id="L165">            figuras.set( i, menor );</span>
+<span class="fc" id="L166">            figuras.set( cual, temp );</span>
+        }
+<span class="fc" id="L168">        verificarInvariante( );</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Método que ordena las figuras del rompecabezas por dificultad (lexicográficamente) de manera ascendente. &lt;br&gt;
+     * El método de ordenamiento utilizado es burbuja. &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt;El vector de figuras está ordenado por dificultad de manera ascendente.
+     */
+    public void ordenarFigurasPorDificultad( )
+    {
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        for( int i = figuras.size( ); i &gt; 0; i-- )</span>
+        {
+<span class="fc bfc" id="L180" title="All 2 branches covered.">            for( int j = 0; j &lt; i - 1; j++ )</span>
+            {
+<span class="fc" id="L182">                Figura figura1 = ( Figura )figuras.get( j );</span>
+<span class="fc" id="L183">                Figura figura2 = ( Figura )figuras.get( j + 1 );</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">                if( figura1.compararPorDificultad( figura2 ) &gt; 0 )</span>
+                {
+<span class="nc" id="L186">                    figuras.set( j, figura2 );</span>
+<span class="nc" id="L187">                    figuras.set( j + 1, figura1 );</span>
+                }
+            }
+        }
+<span class="fc" id="L191">        verificarInvariante( );</span>
+<span class="fc" id="L192">    }</span>
+
+    /**
+     * Método que ordena las figuras del rompecabezas por nombre (lexicográficamente) de manera ascendente. &lt;br&gt;
+     * El método de ordenamiento utilizado es inserción. &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt;El vector de figuras está ordenado por nombre de manera ascendente.
+     */
+    public void ordenarFigurasPorNombre( )
+    {
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        for( int i = 1; i &lt; figuras.size( ); i++ )</span>
+        {
+<span class="fc" id="L203">            Figura porInsertar = ( Figura )figuras.get( i );</span>
+<span class="fc" id="L204">            boolean termino = false;</span>
+
+<span class="fc bfc" id="L206" title="All 4 branches covered.">            for( int j = i; j &gt; 0 &amp;&amp; !termino; j-- )</span>
+            {
+<span class="fc" id="L208">                Figura actual = ( Figura )figuras.get( j - 1 );</span>
+
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">                if( actual.compararPorNombre( porInsertar ) &gt; 0 )</span>
+                {
+<span class="nc" id="L212">                    figuras.set( j, actual );</span>
+<span class="nc" id="L213">                    figuras.set( j - 1, porInsertar );</span>
+                }
+                else
+<span class="fc" id="L216">                    termino = true;</span>
+            }
+        }
+<span class="fc" id="L219">        verificarInvariante( );</span>
+<span class="fc" id="L220">    }</span>
+
+    /**
+     * Busca una figura por su nombre y retorna la posición en la que se encuentra en el vector de figuras del juego. &lt;br&gt;
+     * @param nombre El nombre de la figura buscada - nombre!=null
+     * @return Se retornó la posición donde se encuentra una figura con el nombre dado. Si no se encuentra ninguna figura con ese nombre se retornó -1.
+     */
+    public int buscarFigura( String nombre )
+    {
+<span class="fc" id="L229">        int posicion = -1;</span>
+<span class="fc" id="L230">        boolean termine = false;</span>
+
+<span class="fc bfc" id="L232" title="All 4 branches covered.">        for( int i = 0; i &lt; figuras.size( ) &amp;&amp; !termine; i++ )</span>
+        {
+<span class="fc" id="L234">            Figura figuraPosicion = ( Figura )figuras.get( i );</span>
+<span class="fc" id="L235">            String nombreFigura = figuraPosicion.obtenerNombre( );</span>
+
+            // Los nombres son iguales
+<span class="fc bfc" id="L238" title="All 2 branches covered.">            if( nombreFigura.equalsIgnoreCase( nombre ) )</span>
+            {
+<span class="fc" id="L240">                posicion = i;</span>
+<span class="fc" id="L241">                termine = true;</span>
+            }
+        }
+
+<span class="fc" id="L245">        return posicion;</span>
+    }
+
+    /**
+     * Busca una figura utilizando una búsqueda binaria. &lt;br&gt;
+     * &lt;b&gt;pre: &lt;/b&gt; La lista de figuras se encuentra ordenada por nombre. &lt;br&gt;
+     * @param nombre es el nombre de la figura que se va a buscar - nombre!=null
+     * @return Se retornó la posición de la figura con el nombre dado. Si la figura no existe se retornó -1.
+     */
+    public int buscarBinarioPorNombre( String nombre )
+    {
+<span class="fc" id="L256">        int posicion = -1;</span>
+<span class="fc" id="L257">        int inicio = 0;</span>
+<span class="fc" id="L258">        int fin = figuras.size( ) - 1;</span>
+
+        // Figura a buscar
+<span class="fc" id="L261">        Ficha fichas[][] = new Ficha[1][1];</span>
+<span class="fc" id="L262">        fichas[ 0 ][ 0 ] = new Ficha( &quot;f1imagen1&quot;, 1, 0, 0, Ficha.ESQUINA );</span>
+<span class="fc" id="L263">        Figura aBuscar = new Figura( nombre, &quot;&quot;, 1, 1, &quot;&quot;, &quot;&quot;, fichas );</span>
+
+<span class="fc bfc" id="L265" title="All 4 branches covered.">        while( inicio &lt;= fin &amp;&amp; posicion == -1 )</span>
+        {
+<span class="fc" id="L267">            int medio = ( inicio + fin ) / 2;</span>
+<span class="fc" id="L268">            Figura mitad = ( Figura )figuras.get( medio );</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">            if( mitad.compararPorNombre( aBuscar ) == 0 )</span>
+            {
+<span class="fc" id="L271">                posicion = medio;</span>
+            }
+<span class="fc bfc" id="L273" title="All 2 branches covered.">            else if( mitad.compararPorNombre( aBuscar ) &gt; 0 )</span>
+            {
+<span class="fc" id="L275">                fin = medio - 1;</span>
+            }
+            else
+            {
+<span class="fc" id="L279">                inicio = medio + 1;</span>
+            }
+<span class="fc" id="L281">        }</span>
+<span class="fc" id="L282">        return posicion;</span>
+    }
+
+    /**
+     * Retorna una posición aleatoriamente en el vector de figuras
+     * @return pos Posición en el vector de figuras. pos &lt; figuras.size()
+     */
+    public int seleccionarAleatorio( )
+    {
+<span class="nc" id="L291">        int pos = ( int ) ( ( Math.random( ) + .1 ) * figuras.size( ) );</span>
+<span class="nc" id="L292">        return pos;</span>
+    }
+
+    /**
+     * Retorna la cantidad de rompecabezas que fueron armados
+     * @return Número de rompecabezas armados
+     */
+    public int obtenerArmados( )
+    {
+<span class="fc" id="L301">        return armadas;</span>
+    }
+
+    /**
+     * Retorna la cantidad de rompecabezas que han sido tratados de armar
+     * @return Número de intentos
+     */
+    public int obtenerIntentos( )
+    {
+<span class="fc" id="L310">        return intentos;</span>
+    }
+
+    /**
+     * Incrementa en uno la cantidad de rompecabezas que han sido tratados de armar
+     */
+    public void incrementarIntentos( )
+    {
+<span class="nc" id="L318">        intentos++;</span>
+<span class="nc" id="L319">    }</span>
+
+    /**
+     * Retorna un vector con las figuras del rompecabezas
+     * @return Vector con las figuras.
+     */
+    public ArrayList&lt;Figura&gt; obtenerFiguras( )
+    {
+<span class="fc" id="L327">        return figuras;</span>
+    }
+
+    /**
+     * Retorna la figura que se está armando
+     * @return Figura actual
+     */
+    public Figura obtenerFiguraActual( )
+    {
+<span class="fc" id="L336">        return figuraActual;</span>
+    }
+
+    /**
+     * Establece la figura actual con la que viene por parámetro
+     * @param figura diferente de null
+     */
+    public void establecerFiguraActual( Figura figura )
+    {
+<span class="nc" id="L345">        figuraActual = figura;</span>
+<span class="nc" id="L346">    }</span>
+
+    /**
+     * Método que indica a la figura actual que ordene sus fichas por columnas &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt; Las fichas de la figura están ordenadas por columna.
+     */
+    public void ordenarFichasPorColumnas( )
+    {
+<span class="nc" id="L354">        figuraActual.ordenarPorColumnas( );</span>
+<span class="nc" id="L355">    }</span>
+
+    /**
+     * Método que indica a la figura actual que ordene sus fichas por filas &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt; Las fichas de la figura están ordenadas por fila.
+     */
+    public void ordenarFichasPorFilas( )
+    {
+<span class="nc" id="L363">        figuraActual.ordenarPorFilas( );</span>
+<span class="nc" id="L364">    }</span>
+
+    /**
+     * Método que indica a la figura actual que ordene sus fichas por regiones &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt; Las fichas de la figura están ordenadas por regiones.
+     */
+    public void ordenarFichasPorRegiones( )
+    {
+<span class="nc" id="L372">        figuraActual.ordenarPorRegion( );</span>
+<span class="nc" id="L373">    }</span>
+
+    /**
+     * Devuelve un número que representa los milisegundos desde el 1 de enero de 1970 hasta el tiempo actual.
+     * @return milisegundos desde el 1 de enero de 1970 hasta el tiempo actual.
+     */
+    private long darTiempoActual( )
+    {
+<span class="fc" id="L381">        return new Date( ).getTime( );</span>
+    }
+
+    /**
+     * Retorna el tiempo total en segundos que fue necesario para resolver el juego
+     * @return tiempo
+     */
+    public int darTiempoTotal( )
+    {
+<span class="pc bpc" id="L390" title="1 of 2 branches missed.">        if( tiempoInicial == 0 )</span>
+<span class="fc" id="L391">            return 0;</span>
+        else
+<span class="nc" id="L393">            tiempoFinal = darTiempoActual( );</span>
+<span class="nc" id="L394">        return ( int ) ( ( tiempoFinal - tiempoInicial ) / 1000 );</span>
+    }
+
+    /**
+     * Verifica el invariante de la clase &lt;br&gt;
+     * &lt;b&gt;inv: &lt;/b&gt; El vector de figuras ha sido inicializado. figuras != null &lt;br&gt;
+     * No hay dos figuras con el mismo nombre en el juego &lt;br&gt;
+     * El número intentos no puede se menor a cero &lt;br&gt;
+     * El número de veces que se ha jugado no puede ser menor a cero &lt;br&gt;
+     * El tiempo de juego no puede ser negativo&lt;br&gt;
+     */
+    private void verificarInvariante( )
+    {
+<span class="pc bpc" id="L407" title="2 of 4 branches missed.">        assert figuras != null : &quot;La lista de figuras no puede ser null&quot;;</span>
+<span class="pc bpc" id="L408" title="2 of 4 branches missed.">        assert ( !buscarFigurasConNombresRepetidos( ) ) : &quot;Hay dos figuras con el mismo nombre&quot;;</span>
+<span class="pc bpc" id="L409" title="2 of 4 branches missed.">        assert intentos &gt;= 0 : &quot;La cantidad de intentos de juego del usuario no puede ser negativa&quot;;</span>
+<span class="pc bpc" id="L410" title="2 of 4 branches missed.">        assert armadas &gt;= 0 : &quot;La cantidad de figuras armados del usuario no puede ser negativa&quot;;</span>
+<span class="pc bpc" id="L411" title="2 of 4 branches missed.">        assert tiempoInicial &lt;= tiempoFinal : &quot;El tiempo de juego no puede ser negativo&quot;;</span>
+<span class="fc" id="L412">    }</span>
+
+    /**
+     * Verifica si hay dos figuras con el mismo nombre.
+     * @return Retorna true si hay dos figuras con el mismo nombre, retorna false en caso contrario
+     */
+    private boolean buscarFigurasConNombresRepetidos( )
+    {
+<span class="fc bfc" id="L420" title="All 2 branches covered.">        for( int i = 0; i &lt; figuras.size( ); i++ )</span>
+        {
+<span class="fc" id="L422">            Figura figuraI = ( Figura )figuras.get( i );</span>
+<span class="fc bfc" id="L423" title="All 2 branches covered.">            for( int j = 0; j &lt; figuras.size( ); j++ )</span>
+            {
+<span class="fc bfc" id="L425" title="All 2 branches covered.">                if( i != j )</span>
+                {
+<span class="fc" id="L427">                    Figura figuraJ = ( Figura )figuras.get( j );</span>
+<span class="pc bpc" id="L428" title="1 of 2 branches missed.">                    if( figuraJ.compararPorNombre( figuraI ) == 0 )</span>
+                    {
+<span class="nc" id="L430">                        return true;</span>
+                    }
+                }
+            }
+        }
+<span class="fc" id="L435">        return false;</span>
+    }
+
+    // -----------------------------------------------------------------
+    // Puntos de Extensión
+    // -----------------------------------------------------------------
+
+    /**
+     * Método para la extensión 1
+     * @return respuesta1
+     */
+    public String metodo1( )
+    {
+<span class="nc" id="L448">        return &quot;Respuesta 1&quot;;</span>
+    }
+
+    /**
+     * Método para la extensión2
+     * @return respuesta2
+     */
+    public String metodo2( )
+    {
+<span class="nc" id="L457">        return &quot;Respuesta 2&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

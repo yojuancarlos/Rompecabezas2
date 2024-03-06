@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InterfazRompecabezas.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rompecabezas3</a> &gt; <a href="index.source.html" class="el_package">rompecabezas.interfaz</a> &gt; <span class="el_source">InterfazRompecabezas.java</span></div><h1>InterfazRompecabezas.java</h1><pre class="source lang-java linenums">/**
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * $Id$
+ * Universidad de los Andes (Bogotá - Colombia)
+ * Departamento de Ingeniería de Sistemas y Computación 
+ * Licenciado bajo el esquema Academic Free License version 2.1 
+ *
+ * Proyecto Cupi2 (http://cupi2.uniandes.edu.co)
+ * Ejercicio: n7_rompecabezas
+ * Autor: Manuel Muñoz - 02-Oct-2006
+ * Autor: Milena Vela - 01-Dic-2006
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+
+package rompecabezas.interfaz;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import rompecabezas.mundo.Ficha;
+import rompecabezas.mundo.Figura;
+import rompecabezas.mundo.JuegoRompecabezas;
+
+/**
+ * Esta es la ventana principal de la aplicación.
+ */
+public class InterfazRompecabezas extends JFrame
+{
+    // -----------------------------------------------------------------
+    // Constantes
+    // -----------------------------------------------------------------
+
+    /**
+     * Prefijo del nombre del archivo de cada figura
+     */
+    public static final String ARCHIVO_FIGURA = &quot;./data/figura&quot;;
+
+    /**
+     * Sufijo que indica la extensión del archivo de propiedades donde se encuentra la descripción de cada figura
+     */
+    public static final String PROPIEDAD_EXTENSION_ARCHIVO = &quot;.properties&quot;;
+
+    /**
+     * Prefijo para indicar el nombre de la ficha
+     */
+    public static final String FICHA_NOMBRE = &quot;ficha&quot;;
+
+    // -----------------------------------------------------------------
+    // Atributos
+    // -----------------------------------------------------------------
+
+    /**
+     * Referencia a la clase principal del mundo
+     */
+    private JuegoRompecabezas juego;
+
+    // -----------------------------------------------------------------
+    // Atributos de la interfaz
+    // -----------------------------------------------------------------
+
+    /**
+     * Panel donde se muestran las figuras que tiene el rompecabezas
+     */
+    private PanelFiguras panelFiguras;
+
+    /**
+     * Panel para ordenar las fichas de la figura
+     */
+    private PanelOrdenamientoFichas panelOrdenamiento;
+
+    /**
+     * Panel con la figura en juego
+     */
+    private PanelFigura panelFigura;
+
+    /**
+     * Panel con las fichas de la figura para armar
+     */
+    private PanelFichas panelFichas;
+
+    /**
+     * Panel para el manejo de extensiones
+     */
+    private PanelExtension panelExtension;
+
+    // -----------------------------------------------------------------
+    // Constructores
+    // -----------------------------------------------------------------
+
+    /**
+     * Construye la interfaz e inicializa todos sus componentes.
+     */
+    public InterfazRompecabezas( )
+<span class="nc" id="L103">    {</span>
+
+        try
+        {
+            // inicializa el mundo
+<span class="nc" id="L108">            juego = new JuegoRompecabezas( );</span>
+<span class="nc" id="L109">            cargarFiguras( );</span>
+
+            // Construye la forma
+<span class="nc" id="L112">            setTitle( &quot;Rompecabezas&quot; );</span>
+<span class="nc" id="L113">            setLayout( new BorderLayout( ) );</span>
+<span class="nc" id="L114">            Dimension dimension = Toolkit.getDefaultToolkit( ).getScreenSize( );</span>
+<span class="nc" id="L115">            setSize( dimension );</span>
+<span class="nc" id="L116">            setResizable( false );</span>
+<span class="nc" id="L117">            setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );</span>
+
+            // Creación de los paneles aquí
+
+            // Panel izquierdo
+<span class="nc" id="L122">            panelFiguras = new PanelFiguras( this );</span>
+<span class="nc" id="L123">            add( panelFiguras, BorderLayout.WEST );</span>
+<span class="nc" id="L124">            actualizarLista( );</span>
+
+            // Panel central
+<span class="nc" id="L127">            JPanel panelJuego = new JPanel( );</span>
+<span class="nc" id="L128">            panelJuego.setLayout( new BorderLayout( ) );</span>
+
+<span class="nc" id="L130">            panelFichas = new PanelFichas( );</span>
+<span class="nc" id="L131">            panelJuego.add( panelFichas, BorderLayout.NORTH );</span>
+
+<span class="nc" id="L133">            panelFigura = new PanelFigura( );</span>
+<span class="nc" id="L134">            panelJuego.add( panelFigura, BorderLayout.CENTER );</span>
+
+<span class="nc" id="L136">            panelOrdenamiento = new PanelOrdenamientoFichas( this );</span>
+<span class="nc" id="L137">            panelJuego.add( panelOrdenamiento, BorderLayout.SOUTH );</span>
+
+<span class="nc" id="L139">            add( panelJuego, BorderLayout.CENTER );</span>
+
+            // Panel inferior
+<span class="nc" id="L142">            panelExtension = new PanelExtension( this );</span>
+<span class="nc" id="L143">            add( panelExtension, BorderLayout.SOUTH );</span>
+        }
+<span class="nc" id="L145">        catch( Exception e )</span>
+        {
+<span class="nc" id="L147">            e.printStackTrace( );</span>
+<span class="nc" id="L148">            JOptionPane.showMessageDialog( this, &quot;Error al cargar las figuras &quot; + e.getMessage( ), &quot;Error de Carga&quot;, JOptionPane.ERROR_MESSAGE );</span>
+
+<span class="nc" id="L150">        }</span>
+<span class="nc" id="L151">    }</span>
+
+    // -----------------------------------------------------------------
+    // Métodos
+    // -----------------------------------------------------------------
+
+    /**
+     * Método que lee de los archivos de propiedades y carga todas las figuras que allí se encuentren registradas, junto con sus fichas
+     * @throws Exception Si ocurre algún problema al cargar las figuras
+     */
+    private void cargarFiguras( ) throws Exception
+    {
+
+<span class="nc" id="L164">        Properties propiedadesFigura = new Properties( );</span>
+<span class="nc" id="L165">        propiedadesFigura.load( new FileInputStream( new File( &quot;./data/figuras.properties&quot; ) ) );</span>
+<span class="nc" id="L166">        String strNum = propiedadesFigura.getProperty( &quot;total.figuras&quot; );</span>
+
+<span class="nc" id="L168">        int numFiguras = Integer.parseInt( strNum );</span>
+
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        for( int i = 0; i &lt; numFiguras; i++ )</span>
+        {
+<span class="nc" id="L172">            Properties propiedadesFichas = new Properties( );</span>
+<span class="nc" id="L173">            String nombreArchivo = ARCHIVO_FIGURA + ( i + 1 ) + PROPIEDAD_EXTENSION_ARCHIVO;</span>
+<span class="nc" id="L174">            propiedadesFichas.load( new FileInputStream( new File( nombreArchivo ) ) );</span>
+
+<span class="nc" id="L176">            String nombre = propiedadesFichas.getProperty( &quot;figura.nombre&quot; );</span>
+<span class="nc" id="L177">            String dificultad = propiedadesFichas.getProperty( &quot;figura.dificultad&quot; );</span>
+<span class="nc" id="L178">            String strFilas = propiedadesFichas.getProperty( &quot;figura.filas&quot; );</span>
+<span class="nc" id="L179">            int filas = Integer.parseInt( strFilas );</span>
+<span class="nc" id="L180">            String strColumnas = propiedadesFichas.getProperty( &quot;figura.columnas&quot; );</span>
+<span class="nc" id="L181">            int columnas = Integer.parseInt( strColumnas );</span>
+<span class="nc" id="L182">            String categoria = propiedadesFichas.getProperty( &quot;figura.categoria&quot; );</span>
+<span class="nc" id="L183">            String ruta = propiedadesFichas.getProperty( &quot;figura.ruta&quot; );</span>
+
+<span class="nc" id="L185">            Ficha tablero[][] = new Ficha[filas][columnas];</span>
+
+<span class="nc" id="L187">            int numFichas = filas * columnas;</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            for( int j = 0; j &lt; numFichas; j++ )</span>
+            {
+<span class="nc" id="L190">                tablero = cargarFichas( propiedadesFichas, filas, columnas );</span>
+            }
+
+<span class="nc" id="L193">            Figura figura = new Figura( nombre, dificultad, filas, columnas, categoria, ruta, tablero );</span>
+<span class="nc" id="L194">            juego.agregarFigura( figura );</span>
+
+        }
+
+<span class="nc" id="L198">    }</span>
+
+    /**
+     * Carga las fichas a una figura especificada
+     * @param propiedadesFichas Properties con los datos de las fichas de una figura. Diferente de null
+     * @param numFilas Número de fichas de alto de la figura
+     * @param numColumnas Número de fichas de ancho de la figura
+     * @return Matriz de fichas de la figura ordenadas según la posición relativa a la figura.
+     * @throws Exception si ocurre algún problema al cargar las fichas de la figura
+     */
+    private Ficha[][] cargarFichas( Properties propiedadesFichas, int numFilas, int numColumnas ) throws Exception
+    {
+<span class="nc" id="L210">        Ficha figura[][] = new Ficha[numFilas][numColumnas];</span>
+
+<span class="nc" id="L212">        int cantidad = numFilas * numColumnas;</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        for( int i = 0; i &lt; cantidad; i++ )</span>
+        {
+<span class="nc" id="L215">            String ruta = propiedadesFichas.getProperty( FICHA_NOMBRE + ( i + 1 ) + &quot;.ruta&quot; );</span>
+<span class="nc" id="L216">            String strCol = propiedadesFichas.getProperty( FICHA_NOMBRE + ( i + 1 ) + &quot;.col&quot; );</span>
+<span class="nc" id="L217">            int posCol = Integer.parseInt( strCol );</span>
+<span class="nc" id="L218">            String strFil = propiedadesFichas.getProperty( FICHA_NOMBRE + ( i + 1 ) + &quot;.fil&quot; );</span>
+<span class="nc" id="L219">            int posFil = Integer.parseInt( strFil );</span>
+<span class="nc" id="L220">            String strRegion = propiedadesFichas.getProperty( FICHA_NOMBRE + ( i + 1 ) + &quot;.region&quot; );</span>
+<span class="nc" id="L221">            int region = Integer.parseInt( strRegion );</span>
+
+<span class="nc" id="L223">            Ficha ficha = new Ficha( ruta, i + 1, posFil, posCol, region );</span>
+<span class="nc" id="L224">            figura[ ficha.obtenerFila( ) ][ ficha.obtenerColumna( ) ] = ficha;</span>
+
+        }
+
+<span class="nc" id="L228">        return figura;</span>
+    }
+
+    /**
+     * Método que se ejecuta cuando el usuario quiere comenzar a jugar.&lt;br&gt;
+     * @param nombreFigura Nombre de la figura seleccionada por el usuario. Diferente de null
+     */
+    public void iniciarJuego( String nombreFigura )
+    {
+        try
+        {
+            // Se busca la figura selecciona
+<span class="nc" id="L240">            int posicion = juego.buscarFigura( nombreFigura );</span>
+<span class="nc" id="L241">            Figura actual = ( Figura )juego.obtenerFiguras( ).get( posicion );</span>
+
+            // Se desordena la figura
+<span class="nc" id="L244">            actual.desordenar( );</span>
+
+            // se establece la figura seleccionada como la actual del juego
+<span class="nc" id="L247">            juego.iniciarJuego( actual );</span>
+
+            // Se refresca la información referente al juego
+<span class="nc" id="L250">            pintarFigura( actual );</span>
+<span class="nc" id="L251">            panelFiguras.actualizar( juego.obtenerArmados( ), juego.obtenerIntentos( ), juego.darTiempoTotal( ) + 0, actual.obtenerRutaFigura( ) );</span>
+<span class="nc" id="L252">            panelFiguras.desactivarIniciar( );</span>
+
+        }
+<span class="nc" id="L255">        catch( Exception e )</span>
+        {
+<span class="nc" id="L257">            e.printStackTrace( );</span>
+<span class="nc" id="L258">        }</span>
+<span class="nc" id="L259">    }</span>
+
+    /**
+     * Método que se ejecuta cuando el usuario quiere terminar de jugar el rompecabezas actual
+     */
+    public void terminarJuego( )
+    {
+<span class="nc" id="L266">        int[] fichas = panelFigura.obtenerFichasColocadas( );</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">        if( juego.terminarJuego( fichas ) )</span>
+        {
+<span class="nc" id="L269">            JOptionPane.showMessageDialog( this, &quot;Figura armada correctamente&quot;, &quot;Juego Terminado&quot;, JOptionPane.INFORMATION_MESSAGE );</span>
+        }
+        else
+        {
+<span class="nc" id="L273">            JOptionPane.showMessageDialog( this, &quot;Figura incorrecta&quot;, &quot;Juego Terminado&quot;, JOptionPane.INFORMATION_MESSAGE );</span>
+        }
+<span class="nc" id="L275">        panelFiguras.actualizar( juego.obtenerArmados( ), juego.obtenerIntentos( ), juego.darTiempoTotal( ), PanelFiguras.IMAGEN_TITULO );</span>
+<span class="nc" id="L276">        panelOrdenamiento.desactivarBotones( );</span>
+<span class="nc" id="L277">        panelFiguras.activarIniciar( );</span>
+<span class="nc" id="L278">        panelFichas.quitarFichas( );</span>
+<span class="nc" id="L279">        panelFigura.quitarFigura( );</span>
+
+<span class="nc" id="L281">    }</span>
+
+    /**
+     * Método que se ejecuta cuando el usuario quiere que se arme la figura automáticamente
+     * @param figura Figura a ser armada. Diferente de null
+     */
+    public void armarFigura( Figura figura )
+    {
+<span class="nc" id="L289">        juego.incrementarIntentos();</span>
+<span class="nc" id="L290">        panelFichas.quitarFichas( );</span>
+<span class="nc" id="L291">        panelFigura.armarFigura( figura );</span>
+<span class="nc" id="L292">        panelOrdenamiento.desactivarBotones( );</span>
+<span class="nc" id="L293">        panelFiguras.actualizar( juego.obtenerArmados( ), juego.obtenerIntentos( ), juego.darTiempoTotal( ), PanelFiguras.IMAGEN_TITULO );</span>
+<span class="nc" id="L294">        panelFiguras.activarIniciar( );</span>
+<span class="nc" id="L295">    }</span>
+
+    /**
+     * Devuelve la posición de una figura dentro de la lista de figuras disponibles.
+     * @return Retorna un entero que corresponde a una figura del rompecabezas
+     */
+    public int seleccionarAleatorio( )
+    {
+<span class="nc" id="L303">        return juego.seleccionarAleatorio( );</span>
+
+    }
+
+    /**
+     * Busca una figura usando el nombre y cuando la encuentra la selecciona en la lista y muestra sus datos
+     */
+    public void buscarFigura( )
+    {
+<span class="nc" id="L312">        String nombreFigura = JOptionPane.showInputDialog( this, &quot;Ingrese el nombre de la figura que quiere buscar&quot; );</span>
+<span class="nc bnc" id="L313" title="All 4 branches missed.">        if( nombreFigura != null &amp;&amp; nombreFigura.length( ) != 0 )</span>
+        {
+<span class="nc" id="L315">            int posicion = juego.buscarFigura( nombreFigura );</span>
+<span class="nc" id="L316">            actualizarLista( );</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">            if( posicion != -1 )</span>
+            {
+<span class="nc" id="L319">                panelFiguras.seleccionar( posicion );</span>
+<span class="nc" id="L320">                Figura figura = ( Figura )juego.obtenerFiguras( ).get( posicion );</span>
+<span class="nc" id="L321">                juego.establecerFiguraActual( figura );</span>
+<span class="nc" id="L322">                String respuesta = &quot;La figura &quot; + nombreFigura + &quot;:\n&quot;;</span>
+<span class="nc" id="L323">                respuesta += &quot;Categoría: &quot; + figura.obtenerCategoria( ) + &quot;\n&quot;;</span>
+<span class="nc" id="L324">                respuesta += &quot;Dificultad: &quot; + figura.obtenerDificultad( ) + &quot;\n&quot;;</span>
+<span class="nc" id="L325">                respuesta += &quot;Número de fichas: &quot; + figura.obtenerFichas( ).size( );</span>
+<span class="nc" id="L326">                JOptionPane.showMessageDialog( this, respuesta, &quot;Información figura&quot;, JOptionPane.INFORMATION_MESSAGE );</span>
+<span class="nc" id="L327">                panelFiguras.activarIniciar( );</span>
+<span class="nc" id="L328">            }</span>
+            else
+            {
+<span class="nc" id="L331">                JOptionPane.showMessageDialog( this, &quot;No se encontró la figura buscada&quot; );</span>
+            }
+<span class="nc" id="L333">        }</span>
+        else
+        {
+<span class="nc" id="L336">            JOptionPane.showMessageDialog( this, &quot;Debe ingresar un nombre válido&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE );</span>
+        }
+<span class="nc" id="L338">    }</span>
+
+    /**
+     * Ordena la lista de figuras por categoría.
+     */
+    public void ordenarFigurasPorCategoria( )
+    {
+<span class="nc" id="L345">        juego.ordenarFigurasPorCategoria( );</span>
+<span class="nc" id="L346">        panelFiguras.actualizarListaFiguras( juego.obtenerFiguras( ) );</span>
+
+<span class="nc" id="L348">    }</span>
+
+    /**
+     * Ordena la lista de figuras por dificultad
+     */
+    public void ordenarFigurasPorDificultad( )
+    {
+<span class="nc" id="L355">        juego.ordenarFigurasPorDificultad( );</span>
+<span class="nc" id="L356">        panelFiguras.actualizarListaFiguras( juego.obtenerFiguras( ) );</span>
+<span class="nc" id="L357">    }</span>
+
+    /**
+     * Indica a los paneles que se quiere pintar una nueva figura
+     * @param figura Figura que se quiere pintar. Diferente de null
+     */
+    public void pintarFigura( Figura figura )
+    {
+<span class="nc" id="L365">        panelOrdenamiento.activarBotones( );</span>
+<span class="nc" id="L366">        panelFigura.pintarFigura( figura );</span>
+<span class="nc" id="L367">        panelFichas.setVisible( true );</span>
+<span class="nc" id="L368">        panelFichas.pintarFichas( figura.obtenerFichas( ) );</span>
+<span class="nc" id="L369">        panelOrdenamiento.actualizarListaFichas( figura.obtenerFichas( ) );</span>
+<span class="nc" id="L370">    }</span>
+
+    /**
+     * Actualiza la lista de figuras
+     */
+    private void actualizarLista( )
+    {
+<span class="nc" id="L377">        panelFiguras.actualizarListaFiguras( juego.obtenerFiguras( ) );</span>
+<span class="nc" id="L378">    }</span>
+
+    /**
+     * Indica al panel que contiene la información de la figura que tiene que actualizar la lista de las fichas
+     * @param listaFichas Lista que contiene las fichas ordenadas como el usuario indica. Diferente de null
+     */
+    public void actualizarListaFichas( ArrayList&lt;Ficha&gt; listaFichas )
+    {
+<span class="nc" id="L386">        panelOrdenamiento.actualizarListaFichas( listaFichas );</span>
+<span class="nc" id="L387">    }</span>
+
+    /**
+     * Indica a los paneles que se quiere resaltar una ficha
+     * @param ficha Ficha que se quiere resaltar. Diferente de null
+     */
+    public void resaltarFicha( Ficha ficha )
+    {
+<span class="nc bnc" id="L395" title="All 2 branches missed.">        if( !panelFigura.resaltarFicha( ficha.obtenerPosicion( ) ) )</span>
+<span class="nc" id="L396">            panelFichas.resaltarFicha( ficha.obtenerPosicion( ) );</span>
+
+<span class="nc" id="L398">    }</span>
+
+    /**
+     * Retorna la figura actual que se esta armando
+     * @return Figura que se está armando
+     */
+    public Figura obtenerFiguraActual( )
+    {
+<span class="nc" id="L406">        return juego.obtenerFiguraActual( );</span>
+    }
+
+    /**
+     * Ordena las fichas de la figura actual por columnas
+     */
+    public void ordenarFichasPorColumnas( )
+    {
+<span class="nc" id="L414">        juego.ordenarFichasPorColumnas( );</span>
+<span class="nc" id="L415">        panelOrdenamiento.actualizarListaFichas( juego.obtenerFiguraActual( ).obtenerFichas( ) );</span>
+<span class="nc" id="L416">    }</span>
+
+    /**
+     * Ordena las fichas de la figura actual por filas
+     */
+    public void ordenarFichasPorFilas( )
+    {
+<span class="nc" id="L423">        juego.ordenarFichasPorFilas( );</span>
+<span class="nc" id="L424">        panelOrdenamiento.actualizarListaFichas( juego.obtenerFiguraActual( ).obtenerFichas( ) );</span>
+<span class="nc" id="L425">    }</span>
+
+    /**
+     * Ordena las fichas de la figura actual por regiones
+     */
+    public void ordenarFichasPorRegiones( )
+    {
+<span class="nc" id="L432">        juego.ordenarFichasPorRegiones( );</span>
+<span class="nc" id="L433">        panelOrdenamiento.actualizarListaFichas( juego.obtenerFiguraActual( ).obtenerFichas( ) );</span>
+<span class="nc" id="L434">    }</span>
+
+    /**
+     * Muestra la imagen de la figura en el panel correspondiente
+     * @param figura La figura a mostrar - figura != null
+     */
+    public void mostrarFigura( Figura figura )
+    {
+<span class="nc" id="L442">        panelFiguras.actualizar( juego.obtenerArmados( ), juego.obtenerIntentos( ), 0, figura.obtenerRutaFigura( ) );</span>
+
+<span class="nc" id="L444">    }</span>
+
+    // -----------------------------------------------------------------
+    // Puntos de Extensión
+    // -----------------------------------------------------------------
+
+    /**
+     * Método para la extensión 1
+     */
+    public void reqFuncOpcion1( )
+    {
+<span class="nc" id="L455">        String resultado = juego.metodo1( );</span>
+<span class="nc" id="L456">        JOptionPane.showMessageDialog( this, resultado, &quot;Respuesta&quot;, JOptionPane.INFORMATION_MESSAGE );</span>
+<span class="nc" id="L457">    }</span>
+
+    /**
+     * Método para la extensión 2
+     */
+    public void reqFuncOpcion2( )
+    {
+<span class="nc" id="L464">        String resultado = juego.metodo2( );</span>
+<span class="nc" id="L465">        JOptionPane.showMessageDialog( this, resultado, &quot;Respuesta&quot;, JOptionPane.INFORMATION_MESSAGE );</span>
+<span class="nc" id="L466">    }</span>
+
+    // -----------------------------------------------------------------
+    // Main
+    // -----------------------------------------------------------------
+
+    /**
+     * Este método ejecuta la aplicación, creando una nueva interfaz
+     * @param args
+     */
+    public static void main( String[] args )
+    {
+<span class="nc" id="L478">        InterfazRompecabezas interfaz = new InterfazRompecabezas( );</span>
+<span class="nc" id="L479">        interfaz.setVisible( true );</span>
+<span class="nc" id="L480">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

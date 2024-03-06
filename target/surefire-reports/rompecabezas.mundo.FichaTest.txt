@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: rompecabezas.mundo.FichaTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in rompecabezas.mundo.FichaTest

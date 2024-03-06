@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FichaTransferHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rompecabezas3</a> &gt; <a href="index.source.html" class="el_package">rompecabezas.interfaz</a> &gt; <span class="el_source">FichaTransferHandler.java</span></div><h1>FichaTransferHandler.java</h1><pre class="source lang-java linenums">/**
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * $Id$
+ * Universidad de los Andes (Bogotá - Colombia)
+ * Departamento de Ingeniería de Sistemas y Computación 
+ * Licenciado bajo el esquema Academic Free License version 2.1 
+ *
+ * Proyecto Cupi2 (http://cupi2.uniandes.edu.co)
+ * Ejercicio: n7_rompecabezas
+ * Autor: Manuel Muñoz - Oct 6, 2006
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+
+package rompecabezas.interfaz;
+
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
+
+import javax.swing.JComponent;
+import javax.swing.TransferHandler;
+
+/**
+ * Clase que maneja la transferencia de los datos al hacer Drag and Drop
+ */
+<span class="nc" id="L27">public class FichaTransferHandler extends TransferHandler</span>
+{
+    // -----------------------------------------------------------------
+    // Atributos
+    // -----------------------------------------------------------------
+
+    /**
+     * Tipo de dato que se quiere mover
+     */
+<span class="nc" id="L36">    private DataFlavor imagenFlavor = new DataFlavor( Imagen.class, &quot;Imagen&quot; );</span>
+
+    /**
+     * La imagen que se quiere mover
+     */
+    private DTImagenFicha imagenFuente;
+
+    /**
+     * Variable que indica si se debería mover o no los datos
+     */
+    private boolean deberiaMover;
+
+    // -----------------------------------------------------------------
+    // Métodos
+    // -----------------------------------------------------------------
+
+    /**
+     * Causa la transferencia de un componente.
+     * @param componente El componente que va a recibir la transferencia
+     * @param transferible La información a importar
+     * @return true si los datos fueron insertados en el componente, false de lo contrario
+     */
+    public boolean importData( JComponent componente, Transferable transferible )
+    {
+        Imagen lblImagen;
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if( canImport( componente, transferible.getTransferDataFlavors( ) ) )</span>
+        {
+<span class="nc" id="L63">            DTImagenFicha pic = ( DTImagenFicha )componente;</span>
+            // Se usa para que no arrastre al mismo sitio
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if( imagenFuente == pic )</span>
+            {
+<span class="nc" id="L67">                deberiaMover = false;</span>
+<span class="nc" id="L68">                return true;</span>
+            }
+            try
+            {
+<span class="nc" id="L72">                lblImagen = ( Imagen )transferible.getTransferData( imagenFlavor );</span>
+                // Coloca el componente para la nueva imagen
+<span class="nc" id="L74">                pic.setImage( lblImagen );</span>
+<span class="nc" id="L75">                return true;</span>
+            }
+<span class="nc" id="L77">            catch( UnsupportedFlavorException ufe )</span>
+            {
+<span class="nc" id="L79">                System.out.println( &quot;importData: data flavor no soportado&quot; );</span>
+            }
+<span class="nc" id="L81">            catch( IOException ioe )</span>
+            {
+<span class="nc" id="L83">                System.out.println( &quot;importData: I/O exception&quot; );</span>
+<span class="nc" id="L84">            }</span>
+        }
+<span class="nc" id="L86">        return false;</span>
+    }
+
+    /**
+     * Crea un Transferable para utilizar como source para la transferencia de datos. Retorna una representación de los datos ha ser transferidos o null
+     * @param componente El componente que tiene los datos ha ser transferidos
+     * @return La representación de los datos ha ser transferidos o null
+     */
+    protected Transferable createTransferable( JComponent componente )
+    {
+<span class="nc" id="L96">        imagenFuente = ( DTImagenFicha )componente;</span>
+<span class="nc" id="L97">        imagenFuente.repaint( );</span>
+<span class="nc" id="L98">        deberiaMover = true;</span>
+<span class="nc" id="L99">        return new FichaTransferable( imagenFuente );</span>
+    }
+
+    /**
+     * Devuelve el tipo de acciones de transferencia soportados por la fuente (source)
+     * @param componente El componente que tiene los datos ha ser transferidos
+     * @return MOVE ya que solo se permite mover los datos y no copiarlos
+     */
+    public int getSourceActions( JComponent componente )
+    {
+<span class="nc" id="L109">        return MOVE;</span>
+    }
+
+    /**
+     * Llamado cuando los datos han sido movidos. Este método quita los datos de la fuente, ya que la acción permitida es mover
+     * @param origen El componente que era el origen de los datos
+     * @param datos Los datos transferidos
+     * @param accion La acción que fue ejecutada
+     */
+    protected void exportDone( JComponent origen, Transferable datos, int accion )
+    {
+<span class="nc bnc" id="L120" title="All 4 branches missed.">        if( deberiaMover &amp;&amp; ( accion == MOVE ) )</span>
+        {
+<span class="nc" id="L122">            imagenFuente.setImage( null );</span>
+        }
+<span class="nc" id="L124">        imagenFuente = null;</span>
+<span class="nc" id="L125">    }</span>
+
+    /**
+     * Indica si el componente debería aceptar recibir los datos representados por flavors.
+     * @param componente El componente que recibiría la transferencia.
+     * @param flavors Los tipos de datos disponibles
+     * @return true si los datos pueden ser importados en el componente, false de lo contrario
+     */
+    public boolean canImport( JComponent componente, DataFlavor[] flavors )
+    {
+<span class="nc" id="L135">        ImagenFicha pic = ( ImagenFicha )componente;</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if( pic.tieneImagen( ) )</span>
+        {
+<span class="nc" id="L138">            return false;</span>
+        }
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for( int i = 0; i &lt; flavors.length; i++ )</span>
+        {
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            if( imagenFlavor.equals( flavors[ i ] ) )</span>
+            {
+<span class="nc" id="L144">                return true;</span>
+            }
+        }
+<span class="nc" id="L147">        return false;</span>
+    }
+
+    /**
+     * Clase que empaqueta la información a ser transferida
+     */
+    class FichaTransferable implements Transferable
+    {
+
+        /**
+         * Imagen que muestra
+         */
+        private Imagen imagen;
+
+        /**
+         * Método constructor por parámetros
+         */
+        FichaTransferable( DTImagenFicha ficha )
+<span class="nc" id="L165">        {</span>
+<span class="nc" id="L166">            imagen = ficha.obtenerImagen( );</span>
+<span class="nc" id="L167">        }</span>
+
+        /**
+         * Devuelve un objeto que representa los datos ha ser transferidos.
+         * @param flavor El tipo solicitado para los datos
+         * @exception IOException Si los datos no están disponibles.
+         * @exception UnsupportedFlavorException Si el tipo de datos solicitados no esta soportado
+         */
+        public Object getTransferData( DataFlavor flavor ) throws UnsupportedFlavorException
+        {
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            if( !isDataFlavorSupported( flavor ) )</span>
+            {
+<span class="nc" id="L179">                throw new UnsupportedFlavorException( flavor );</span>
+            }
+<span class="nc" id="L181">            return imagen;</span>
+        }
+
+        /**
+         * Devuelve un arreglo de objetos DataFlavors indicando como pueden ser proveídos los datos.
+         * @return Un arreglo de DataFlavors indicando como se pueden transferir los datos
+         */
+        public DataFlavor[] getTransferDataFlavors( )
+        {
+<span class="nc" id="L190">            return new DataFlavor[]{ imagenFlavor };</span>
+        }
+
+        /**
+         * Retorna si los tipos de datos son soportados por este objeto
+         * @param flavor El tipo de datos solicitado para los datos
+         * @return boolean que indica si los tipos de datos son soportados
+         */
+        public boolean isDataFlavorSupported( DataFlavor flavor )
+        {
+<span class="nc" id="L200">            return imagenFlavor.equals( flavor );</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

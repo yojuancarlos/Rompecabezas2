@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Figura.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rompecabezas3</a> &gt; <a href="index.source.html" class="el_package">rompecabezas.mundo</a> &gt; <span class="el_source">Figura.java</span></div><h1>Figura.java</h1><pre class="source lang-java linenums"> /**
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * $Id: Figura.java 850 2007-01-16 14:36:31Z f-vela $
+ * Universidad de los Andes (Bogotá - Colombia)
+ * Departamento de Ingeniería de Sistemas y Computación 
+ * Licenciado bajo el esquema Academic Free License version 2.1 
+ *
+ * Proyecto Cupi2 (http://cupi2.uniandes.edu.co)
+ * Ejercicio: n7_rompecabezas
+ * Autor: Manuel Muñoz - Oct 2, 2006
+ * Autor: Milena Vela - 01-Dic-2006
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+
+package rompecabezas.mundo;
+
+import java.util.ArrayList;
+
+/**
+ * Clase que representa una figura del juego de rompecabezas. &lt;br&gt;
+ * &lt;b&gt;inv: &lt;/b&gt; La dificultad solo puede tomar los valores DIFICULTAD_BAJA, DIFICULTAD_MEDIA o DIFICULTAD_SUPERIOR &lt;br&gt;
+ * El nombre de la figura tiene que ser diferente de null &lt;br&gt;
+ * El número de fichas de ancho de la figura tiene que ser mayor a 0 &lt;br&gt;
+ * El número de fichas de alto de la figura tiene que ser mayor a 0 &lt;br&gt;
+ * La ruta de la imagen completa debe ser diferente de null &lt;br&gt;
+ * La categoría de la figura tiene que ser diferente de null &lt;br&gt;
+ * El vector de fichas de la figura ha sido inicializado &lt;br&gt;
+ * La matriz de fichas ha sido inicializada &lt;br&gt;
+ * Toda posición en la matriz ha sido inicializada &lt;br&gt;
+ * No existen dos fichas con la misma posición en la matriz de fichas &lt;br&gt;
+ * No existen dos fichas con la misma posición en el vector de fichas &lt;br&gt;
+ * La posición de la ficha debe ser válida dentro de la figura. 0 &lt; posicion &lt;= numFichasAncho*numFichasAlto
+ */
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">public class Figura</span>
+{
+    // -----------------------------------------------------------------
+    // Constantes
+    // -----------------------------------------------------------------
+    /**
+     * Constante que identifica la dificultad baja
+     */
+    public static final String DIFICULTAD_BAJA = &quot;Baja&quot;;
+
+    /**
+     * Constante que identifica la dificultad media
+     */
+    public static final String DIFICULTAD_MEDIA = &quot;Media&quot;;
+
+    /**
+     * Constante que identifica la dificultad alta
+     */
+    public static final String DIFICULTAD_SUPERIOR = &quot;Superior&quot;;
+
+    // -----------------------------------------------------------------
+    // Atributos
+    // -----------------------------------------------------------------
+
+    /**
+     * Dificultad para armar el rompecabezas.
+     */
+    private String dificultad;
+
+    /**
+     * Nombre de la figura
+     */
+    private String nombre;
+
+    /**
+     * Número de fichas que tiene la figura de ancho
+     */
+    private int numFichasAncho;
+
+    /**
+     * Número de fichas que tiene la figura de alto
+     */
+    private int numFichasAlto;
+
+    /**
+     * Ruta relativa de la imagen del rompecabezas armado
+     */
+    private String rutaImagenCompleta;
+
+    /**
+     * Categoría de la figura
+     */
+    private String categoria;
+
+    /**
+     * Vector que contiene las fichas de la figura
+     */
+    private ArrayList&lt;Ficha&gt; fichas;
+
+    /**
+     * Matriz con las fichas de la figura
+     */
+    private Ficha[][] fichasFigura;
+
+    // -----------------------------------------------------------------
+    // Constructores
+    // -----------------------------------------------------------------
+
+    /**
+     * Método constructor con parámetros
+     * @param pNombre Nombre que deberá tener la figura. Diferente de null
+     * @param pDificultad Dificultad que tendrá la figura. Diferente de null
+     * @param pFilas Cantidad de filas de la figura. Entero mayor que cero
+     * @param pColumnas Cantidad de columnas de la figura. Entero mayor que cero
+     * @param pCategoria Categoría a la que pertenece la figura. Diferente de null
+     * @param pRuta Ruta de la imagen que representa. Diferente de null
+     * @param pFichas Matriz con todas las fichas de la figura. pFichas != null y cada posición en la matriz esta inicializada
+     */
+    public Figura( String pNombre, String pDificultad, int pFilas, int pColumnas, String pCategoria, String pRuta, Ficha[][] pFichas )
+<span class="fc" id="L113">    {</span>
+<span class="fc" id="L114">        nombre = pNombre;</span>
+<span class="fc" id="L115">        dificultad = pDificultad;</span>
+<span class="fc" id="L116">        numFichasAlto = pFilas;</span>
+<span class="fc" id="L117">        numFichasAncho = pColumnas;</span>
+<span class="fc" id="L118">        categoria = pCategoria;</span>
+<span class="fc" id="L119">        rutaImagenCompleta = pRuta;</span>
+<span class="fc" id="L120">        fichasFigura = pFichas;</span>
+<span class="fc" id="L121">        fichas = obtenerFichasOrdenadasPorPosicion( );</span>
+
+<span class="fc" id="L123">    }</span>
+
+    // -----------------------------------------------------------------
+    // Métodos
+    // -----------------------------------------------------------------
+
+    /**
+     * Método que ordena las fichas de la figura de acuerdo a su columna de manera ascendente. &lt;br&gt;
+     * El método de ordenamiento utilizado es inserción. &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt;El vector de fichas está ordenado por número de columna de manera ascendente.
+     */
+    public void ordenarPorColumnas( )
+    {
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        for( int i = 1; i &lt; fichas.size( ); i++ )</span>
+        {
+<span class="fc" id="L138">            Ficha porInsertar = ( Ficha )fichas.get( i );</span>
+<span class="fc" id="L139">            boolean termino = false;</span>
+
+<span class="fc bfc" id="L141" title="All 4 branches covered.">            for( int j = i; j &gt; 0 &amp;&amp; !termino; j-- )</span>
+            {
+<span class="fc" id="L143">                Ficha actual = ( Ficha )fichas.get( j - 1 );</span>
+
+<span class="fc bfc" id="L145" title="All 2 branches covered.">                if( actual.compararPorColumna( porInsertar ) &gt; 0 )</span>
+                {
+<span class="fc" id="L147">                    fichas.set( j, actual );</span>
+<span class="fc" id="L148">                    fichas.set( j - 1, porInsertar );</span>
+                }
+                else
+<span class="fc" id="L151">                    termino = true;</span>
+            }
+        }
+<span class="fc" id="L154">        verificarInvariante( );</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Método que ordena las fichas de la figura por filas de manera ascendente. &lt;br&gt;
+     * El método de ordenamiento utilizado es selección. &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt;El vector de fichas está ordenado por número de fila de manera ascendente.
+     */
+    public void ordenarPorFilas( )
+    {
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        for( int inicial = 0; inicial &lt; fichas.size( ); inicial++ )</span>
+        {
+<span class="fc" id="L166">            int posicionMenor = inicial;</span>
+<span class="fc" id="L167">            Ficha fichaMenor = ( Ficha )fichas.get( inicial );</span>
+
+            // Buscar la ficha de menor fila entre inicial y final
+<span class="fc bfc" id="L170" title="All 2 branches covered.">            for( int i = inicial + 1; i &lt; fichas.size( ); i++ )</span>
+            {
+<span class="fc" id="L172">                Ficha fichaPosicion = ( Ficha )fichas.get( i );</span>
+
+                // La ficha de la posición actual es menor que la menor encontrada hasta el momento
+<span class="fc bfc" id="L175" title="All 2 branches covered.">                if( fichaPosicion.compararPorFila( fichaMenor ) &lt; 0 )</span>
+                {
+<span class="fc" id="L177">                    fichaMenor = fichaPosicion;</span>
+<span class="fc" id="L178">                    posicionMenor = i;</span>
+                }
+            }
+
+<span class="fc bfc" id="L182" title="All 2 branches covered.">            if( posicionMenor != inicial )</span>
+            {
+<span class="fc" id="L184">                Ficha temp = ( Ficha )fichas.get( inicial );</span>
+<span class="fc" id="L185">                fichas.set( inicial, fichaMenor );</span>
+<span class="fc" id="L186">                fichas.set( posicionMenor, temp );</span>
+            }
+
+        }
+<span class="fc" id="L190">        verificarInvariante( );</span>
+<span class="fc" id="L191">    }</span>
+
+    /**
+     * Método que organiza por regiones las fichas usando el algoritmo de burbuja &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt;El vector de fichas está ordenado por región de manera ascendente así: ESQUINA, BORDE e INTERNA.
+     */
+    public void ordenarPorRegion( )
+    {
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        for( int i = fichas.size( ); i &gt; 0; i-- )</span>
+        {
+<span class="fc bfc" id="L201" title="All 2 branches covered.">            for( int j = 0; j &lt; i - 1; j++ )</span>
+            {
+<span class="fc" id="L203">                Ficha f1 = ( Ficha )fichas.get( j );</span>
+<span class="fc" id="L204">                Ficha f2 = ( Ficha )fichas.get( j + 1 );</span>
+
+                // Si es necesario se deben intercambiar f1 y f2
+<span class="fc bfc" id="L207" title="All 2 branches covered.">                if( f1.compararPorRegion( f2 ) &gt; 0 )</span>
+                {
+<span class="fc" id="L209">                    fichas.set( j, f2 );</span>
+<span class="fc" id="L210">                    fichas.set( j + 1, f1 );</span>
+                }
+            }
+        }
+<span class="fc" id="L214">        verificarInvariante( );</span>
+<span class="fc" id="L215">    }</span>
+
+    /**
+     * Método que organiza por posición las fichas usando el algoritmo de burbuja &lt;br&gt;
+     * &lt;b&gt;post: &lt;/b&gt;El vector de fichas está ordenado por posición relativa a la figura de manera ascendente.
+     */
+    public void ordenarPorPosicion( )
+    {
+<span class="fc bfc" id="L223" title="All 2 branches covered.">        for( int i = fichas.size( ); i &gt; 0; i-- )</span>
+        {
+<span class="fc bfc" id="L225" title="All 2 branches covered.">            for( int j = 0; j &lt; i - 1; j++ )</span>
+            {
+<span class="fc" id="L227">                Ficha f1 = ( Ficha )fichas.get( j );</span>
+<span class="fc" id="L228">                Ficha f2 = ( Ficha )fichas.get( j + 1 );</span>
+
+                // Si es necesario se deben intercambiar f1 y f2
+<span class="fc bfc" id="L231" title="All 2 branches covered.">                if( f1.compararPorPosicion( f2 ) &gt; 0 )</span>
+                {
+<span class="fc" id="L233">                    fichas.set( j, f2 );</span>
+<span class="fc" id="L234">                    fichas.set( j + 1, f1 );</span>
+                }
+            }
+        }
+<span class="fc" id="L238">        verificarInvariante( );</span>
+<span class="fc" id="L239">    }</span>
+
+    /**
+     * Compara dos figuras por dificultad (lexicográficamente).
+     * @param f La figura con la que se está comparando - f != null
+     * @return Retorna 0 si las figuras son iguales en dificultad. &lt;br&gt;
+     *         Retorna -1 si la dificultad de la figura f es mayor . &lt;br&gt;
+     *         Retorna 1 si la dificultad de la figura f es menor. &lt;br&gt;
+     */
+    public int compararPorDificultad( Figura f )
+    {
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        if( dificultad.compareTo( f.obtenerDificultad( ) ) == 0 )</span>
+<span class="fc" id="L251">            return 0;</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">        else if( dificultad.compareTo( f.obtenerDificultad( ) ) &gt; 0 )</span>
+<span class="fc" id="L253">            return 1;</span>
+        else
+<span class="fc" id="L255">            return -1;</span>
+
+    }
+
+    /**
+     * Compara dos figuras por categoría (lexicográficamente).
+     * @param f La figura con la que se está comparando - f != null
+     * @return Retorna 0 si las figuras son iguales en categoría. &lt;br&gt;
+     *         Retorna -1 si la categoría de la figura f es mayor . &lt;br&gt;
+     *         Retorna 1 si la categoría de la figura f es menor. &lt;br&gt;
+     */
+    public int compararPorCategoria( Figura f )
+    {
+<span class="fc bfc" id="L268" title="All 2 branches covered.">        if( categoria.compareTo( f.obtenerCategoria( ) ) == 0 )</span>
+<span class="fc" id="L269">            return 0;</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        else if( categoria.compareTo( f.obtenerCategoria( ) ) &gt; 0 )</span>
+<span class="fc" id="L271">            return 1;</span>
+        else
+<span class="fc" id="L273">            return -1;</span>
+
+    }
+
+    /**
+     * Compara dos figuras por nombre (lexicográficamente).
+     * @param f La figura con la que se está comparando - f != null
+     * @return Retorna 0 si las figuras son iguales según el nombre. &lt;br&gt;
+     *         Retorna -1 si l de la figura f es mayor . &lt;br&gt;
+     *         Retorna 1 si la dificultad de la figura f es menor. &lt;br&gt;
+     */
+    public int compararPorNombre( Figura f )
+    {
+<span class="fc bfc" id="L286" title="All 2 branches covered.">        if( nombre.compareTo( f.obtenerNombre( ) ) == 0 )</span>
+<span class="fc" id="L287">            return 0;</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        else if( nombre.compareTo( f.obtenerNombre( ) ) &gt; 0 )</span>
+<span class="fc" id="L289">            return 1;</span>
+        else
+<span class="fc" id="L291">            return -1;</span>
+
+    }
+
+    /**
+     * Retorna la matriz de fichas.
+     * @return Matriz con las fichas de la figura
+     */
+    public Ficha[][] obtenerMatrizFichas( )
+    {
+<span class="fc" id="L301">        return fichasFigura;</span>
+    }
+
+    /**
+     * Desordena las fichas de la figura para que el jugador comience a jugar con unas fichas en desorden
+     */
+    public void desordenar( )
+    {
+<span class="fc bfc" id="L309" title="All 2 branches covered.">        for( int i = 0; i &lt; fichas.size( ); i++ )</span>
+        {
+<span class="fc" id="L311">            int indice1 = ( int ) ( Math.random( ) * fichas.size( ) );</span>
+<span class="fc" id="L312">            int indice2 = ( int ) ( Math.random( ) * fichas.size( ) );</span>
+<span class="fc" id="L313">            Ficha ficha1 = ( Ficha )fichas.get( indice1 );</span>
+<span class="fc" id="L314">            fichas.set( indice1, fichas.get( indice2 ) );</span>
+<span class="fc" id="L315">            fichas.set( indice2, ficha1 );</span>
+        }
+<span class="fc" id="L317">        verificarInvariante( );</span>
+<span class="fc" id="L318">    }</span>
+
+    /**
+     * Informa si la figura se encuentra armada comparando el vector de fichas ordenadas por posición con el arreglo de fichas jugadas
+     * @param fichasJugadas Arreglo con las posiciones de las fichas que colocó el usuario. Diferente de null
+     * @return true si la figura esta armada, false de lo contrario
+     */
+    public boolean estaArmada( int[] fichasJugadas )
+    {
+<span class="fc" id="L327">        ordenarPorPosicion( );</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">        if( fichasJugadas.length == 0 )</span>
+<span class="fc" id="L329">            return false;</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">        for( int i = 0; i &lt; fichasJugadas.length; i++ )</span>
+        {
+<span class="fc" id="L332">            int fichaJugada = fichasJugadas[ i ];</span>
+
+<span class="fc" id="L334">            int fichaReal = ( ( Ficha )fichas.get( i ) ).obtenerPosicion( );</span>
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">            if( fichaReal != fichaJugada )</span>
+<span class="nc" id="L336">                return false;</span>
+        }
+<span class="fc" id="L338">        return true;</span>
+    }
+
+    /**
+     * Retorna la dificultad de la figura
+     * @return Cadena que corresponde al grado de dificultad de la figura
+     */
+    public String obtenerDificultad( )
+    {
+<span class="fc" id="L347">        return dificultad;</span>
+    }
+
+    /**
+     * Retorna la categoría de la figura
+     * @return Cadena con la categoría a la que pertenece la figura
+     */
+    public String obtenerCategoria( )
+    {
+<span class="fc" id="L356">        return categoria;</span>
+    }
+
+    /**
+     * Retorna el número de fichas de alto que tiene la figura
+     * @return Número de fichas de alto de la figura
+     */
+    public int obtenerFichasAlto( )
+    {
+<span class="fc" id="L365">        return numFichasAlto;</span>
+    }
+
+    /**
+     * Retorna el número de fichas de ancho que tiene la figura
+     * @return Número de fichas de ancho de la figura
+     */
+    public int obtenerFichasAncho( )
+    {
+<span class="fc" id="L374">        return numFichasAncho;</span>
+    }
+
+    /**
+     * Retorna el nombre de la figura
+     * @return Cadena de caracteres con el nombre de la figura.
+     */
+    public String obtenerNombre( )
+    {
+<span class="fc" id="L383">        return nombre;</span>
+    }
+
+    /**
+     * Retorna la ruta a la imagen de la figura
+     * @return Cadena de caracteres con la ruta de la figura.
+     */
+    public String obtenerRutaFigura( )
+    {
+<span class="fc" id="L392">        return rutaImagenCompleta;</span>
+    }
+
+    /**
+     * Retorna la lista de las fichas de la figura
+     * @return Vector con las fichas de la figura. Las fichas no tienen ningún orden específico.
+     */
+    public ArrayList&lt;Ficha&gt; obtenerFichas( )
+    {
+<span class="fc" id="L401">        return fichas;</span>
+    }
+
+    /**
+     * Retorna la lista de fichas ordenadas por posición de manera ascendente.
+     * @return Vector con las fichas ordenadas por la posición relativa a la figura.
+     */
+    private ArrayList&lt;Ficha&gt; obtenerFichasOrdenadasPorPosicion( )
+    {
+<span class="fc" id="L410">        ArrayList&lt;Ficha&gt; fichasArmadas = new ArrayList&lt;&gt;( );</span>
+
+<span class="fc bfc" id="L412" title="All 2 branches covered.">        for( int i = 0; i &lt; numFichasAlto; i++ )</span>
+        {
+<span class="fc bfc" id="L414" title="All 2 branches covered.">            for( int j = 0; j &lt; numFichasAncho; j++ )</span>
+            {
+<span class="fc" id="L416">                Ficha ficha = fichasFigura[ i ][ j ];</span>
+<span class="fc" id="L417">                fichasArmadas.add( ficha );</span>
+            }
+        }
+
+<span class="fc" id="L421">        return fichasArmadas;</span>
+    }
+
+    /**
+     * Retorna una cadena con el nombre de la figura y su categoría
+     * @return Cadena nombre - categoría de la figura
+     */
+    public String toString( )
+    {
+<span class="nc" id="L430">        String string = new String( );</span>
+<span class="nc" id="L431">        string += nombre + &quot; - &quot;;</span>
+<span class="nc" id="L432">        string += categoria;</span>
+<span class="nc" id="L433">        return string;</span>
+    }
+
+    /**
+     * Método que verifica el invariante de la clase &lt;br&gt;
+     * &lt;b&gt;inv: &lt;/b&gt; La dificultad solo puede tomar los valores DIFICULTAD_BAJA, DIFICULTAD_MEDIA o DIFICULTAD_SUPERIOR &lt;br&gt;
+     * El nombre de la figura tiene que ser diferente de null &lt;br&gt;
+     * El número de fichas de ancho de la figura tiene que ser mayor a 0 &lt;br&gt;
+     * El número de fichas de alto de la figura tiene que ser mayor a 0 &lt;br&gt;
+     * La ruta de la imagen completa debe ser diferente de null &lt;br&gt;
+     * La categoría de la figura tiene que ser diferente de null &lt;br&gt;
+     * El vector de fichas de la figura ha sido inicializado &lt;br&gt;
+     * La matriz de fichas ha sido inicializada &lt;br&gt;
+     * Toda posición en la matriz ha sido inicializada &lt;br&gt;
+     * No existen dos fichas con la misma posición en la matriz de fichas &lt;br&gt;
+     * No existen dos fichas con la misma posición en el vector de fichas &lt;br&gt;
+     * La posición de la ficha debe ser válida dentro de la figura. 0 &lt; posicion &lt;= numFichasAncho*numFichasAlto
+     */
+    private void verificarInvariante( )
+    {
+
+<span class="pc bpc" id="L454" title="3 of 8 branches missed.">        assert ( dificultad.equals( DIFICULTAD_BAJA ) || dificultad.equals( DIFICULTAD_MEDIA ) || dificultad.equals( DIFICULTAD_SUPERIOR ) ) : &quot;La  dificultad no se encuentra en los rangos especificados&quot;;</span>
+<span class="pc bpc" id="L455" title="2 of 4 branches missed.">        assert nombre != null : &quot;El nombre de la figura no puede ser null&quot;;</span>
+<span class="pc bpc" id="L456" title="2 of 4 branches missed.">        assert numFichasAncho &gt; 0 : &quot;La cantidad de columnas no puede ser negativa o cero&quot;;</span>
+<span class="pc bpc" id="L457" title="2 of 4 branches missed.">        assert numFichasAlto &gt; 0 : &quot;La cantidad de filas no puede ser negativa o cero&quot;;</span>
+<span class="pc bpc" id="L458" title="2 of 4 branches missed.">        assert rutaImagenCompleta != null : &quot;La ruta de la imagen completa no puede ser null&quot;;</span>
+<span class="pc bpc" id="L459" title="2 of 4 branches missed.">        assert categoria != null : &quot;La categoría de la figura no puede ser null&quot;;</span>
+<span class="pc bpc" id="L460" title="2 of 4 branches missed.">        assert fichas != null : &quot;La lista de fichas no puede ser null&quot;;</span>
+<span class="pc bpc" id="L461" title="2 of 4 branches missed.">        assert fichasFigura != null : &quot;La matriz de fichas de la figura no puede ser null&quot;;</span>
+<span class="pc bpc" id="L462" title="2 of 4 branches missed.">        assert matrizInicializada( ) : &quot;Toda posición en la matriz debe estar inicializada&quot;;</span>
+<span class="pc bpc" id="L463" title="2 of 4 branches missed.">        assert !hayFichasEnIgualPosicion( ) : &quot;No pueden existir dos fichas con la misma posición&quot;;</span>
+<span class="pc bpc" id="L464" title="2 of 4 branches missed.">        assert !hayFichasConIgualColumnaYFila( ) : &quot;No pueden existir dos fichas con la misma columna y fila&quot;;</span>
+<span class="pc bpc" id="L465" title="2 of 4 branches missed.">        assert !hayFichasPosicionInvalida( ) : &quot;La posición de las fichas debe estar en el rango válido&quot;;</span>
+
+<span class="fc" id="L467">    }</span>
+
+    /**
+     * Verifica que la matriz de fichas contiene una ficha en cada posición.
+     * @return true si cada posición en la matriz está inicializada, false en caso contrario.
+     */
+    private boolean matrizInicializada( )
+    {
+<span class="fc bfc" id="L475" title="All 2 branches covered.">        for( int i = 0; i &lt; numFichasAlto; i++ )</span>
+        {
+<span class="fc bfc" id="L477" title="All 2 branches covered.">            for( int j = 0; j &lt; numFichasAncho; j++ )</span>
+            {
+<span class="pc bpc" id="L479" title="1 of 2 branches missed.">                if( fichasFigura[ i ][ j ] == null )</span>
+<span class="nc" id="L480">                    return false;</span>
+            }
+        }
+
+<span class="fc" id="L484">        return true;</span>
+    }
+
+    /**
+     * Verifica si hay dos fichas con la misma posición en la figura
+     * @return Retorna true si hay dos fichas con la misma posición dentro de la figura; retorna false en caso contrario.
+     */
+    private boolean hayFichasEnIgualPosicion( )
+    {
+<span class="fc" id="L493">        ArrayList&lt;Ficha&gt; fichasArmadas = obtenerFichasOrdenadasPorPosicion( );</span>
+<span class="fc bfc" id="L494" title="All 2 branches covered.">        for( int i = 0; i &lt; fichasArmadas.size( ); i++ )</span>
+        {
+<span class="fc" id="L496">            Ficha ficha1 = ( Ficha )fichasArmadas.get( i );</span>
+
+<span class="fc bfc" id="L498" title="All 2 branches covered.">            for( int j = 0; j &lt; fichasArmadas.size( ); j++ )</span>
+            {
+<span class="fc bfc" id="L500" title="All 2 branches covered.">                if( i != j )</span>
+                {
+<span class="fc" id="L502">                    Ficha ficha2 = ( Ficha )fichasArmadas.get( j );</span>
+<span class="pc bpc" id="L503" title="1 of 2 branches missed.">                    if( ficha1.obtenerPosicion( ) == ficha2.obtenerPosicion( ) )</span>
+                    {
+<span class="nc" id="L505">                        return true;</span>
+                    }
+                }
+            }
+        }
+<span class="fc" id="L510">        return false;</span>
+    }
+
+    /**
+     * Verifica si hay dos fichas con la misma columna y la misma fila en la figura
+     * @return Retorna true si hay dos fichas con la misma fila y columna dentro de la figura; retorna false en caso contrario.
+     */
+
+    private boolean hayFichasConIgualColumnaYFila( )
+    {
+<span class="fc" id="L520">        ArrayList&lt;Ficha&gt; fichasArmadas = obtenerFichasOrdenadasPorPosicion( );</span>
+<span class="fc bfc" id="L521" title="All 2 branches covered.">        for( int i = 0; i &lt; fichasArmadas.size( ); i++ )</span>
+        {
+<span class="fc" id="L523">            Ficha ficha1 = ( Ficha )fichasArmadas.get( i );</span>
+
+<span class="fc bfc" id="L525" title="All 2 branches covered.">            for( int j = 0; j &lt; fichasArmadas.size( ); j++ )</span>
+            {
+<span class="fc bfc" id="L527" title="All 2 branches covered.">                if( i != j )</span>
+                {
+<span class="fc" id="L529">                    Ficha ficha2 = ( Ficha )fichasArmadas.get( j );</span>
+<span class="pc bpc" id="L530" title="1 of 4 branches missed.">                    if( ficha1.obtenerColumna( ) == ficha2.obtenerColumna( ) &amp;&amp; ficha1.obtenerFila( ) == ficha2.obtenerFila( ) )</span>
+                    {
+<span class="nc" id="L532">                        return true;</span>
+                    }
+                }
+            }
+        }
+<span class="fc" id="L537">        return false;</span>
+    }
+
+    /**
+     * Verifica que la posición de las fichas relativa a la figura sea una posición entre 1 y numFichasAncho*numFichasAlto
+     * @return Retorna true si hay una ficha con posición relativa a la figura fuera del rango permitido; retorna false en caso contrario.
+     */
+    private boolean hayFichasPosicionInvalida( )
+    {
+<span class="fc" id="L546">        ArrayList&lt;Ficha&gt; fichasArmadas = obtenerFichasOrdenadasPorPosicion( );</span>
+<span class="fc bfc" id="L547" title="All 2 branches covered.">        for( int i = 0; i &lt; fichasArmadas.size( ); i++ )</span>
+        {
+<span class="fc" id="L549">            Ficha ficha1 = ( Ficha )fichasArmadas.get( i );</span>
+<span class="fc" id="L550">            int posicion = ficha1.obtenerPosicion( );</span>
+<span class="fc" id="L551">            int numFichas = numFichasAncho * numFichasAlto;</span>
+
+<span class="pc bpc" id="L553" title="2 of 4 branches missed.">            if( posicion &lt;= 0 || posicion &gt; numFichas )</span>
+            {
+<span class="nc" id="L555">                return true;</span>
+            }
+        }
+
+<span class="fc" id="L559">        return false;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

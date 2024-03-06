@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PanelOrdenamientoFichas.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rompecabezas3</a> &gt; <a href="index.source.html" class="el_package">rompecabezas.interfaz</a> &gt; <span class="el_source">PanelOrdenamientoFichas.java</span></div><h1>PanelOrdenamientoFichas.java</h1><pre class="source lang-java linenums">/**
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * $Id: PanelOrdenamientoFichas.java 855 2007-01-16 19:14:13Z f-vela $
+ * Universidad de los Andes (Bogotá - Colombia)
+ * Departamento de Ingeniería de Sistemas y Computación 
+ * Licenciado bajo el esquema Academic Free License version 2.1 
+ *
+ * Proyecto Cupi2 (http://cupi2.uniandes.edu.co)
+ * Ejercicio: n7_rompecabezas
+ * Autor: Manuel Muñoz - Oct 5, 2006
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+
+package rompecabezas.interfaz;
+
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import rompecabezas.mundo.Ficha;
+
+/**
+ * Panel que muestra la información de la figura en juego
+ */
+public class PanelOrdenamientoFichas extends JPanel implements ListSelectionListener, ActionListener
+{
+
+    // -----------------------------------------------------------------
+    // Constantes
+    // -----------------------------------------------------------------
+
+    /**
+     * Acción que se ejecuta cuando se presiona el botón de ordenar las fichas del rompecabezas por columnas
+     */
+    private static final String ACCION_ORDENAR_COLUMNAS = &quot;ACCION_ORDENAR_COLUMNAS&quot;;
+
+    /**
+     * Acción que se ejecuta cuando se presiona el botón de ordenar las fichas del rompecabezas por filas
+     */
+    private static final String ACCION_ORDENAR_FILAS = &quot;ACCION_ORDENAR_FILAS&quot;;
+
+    /**
+     * Acción que se ejecuta cuando se presiona el botón de ordenar las fichas del rompecabezas por regiones
+     */
+    private static final String ACCION_ORDENAR_REGIONES = &quot;ACCION_ORDENAR_REGIONES&quot;;
+
+    // -----------------------------------------------------------------
+    // Atributos de Interfaz
+    // -----------------------------------------------------------------
+
+    /**
+     * Botón para ordenar las figuras por columnas
+     */
+    private JButton btnOrdenarColumnas;
+
+    /**
+     * Botón para ordenar las figuras por filas
+     */
+    private JButton btnOrdenarFilas;
+
+    /**
+     * Botón para ordenar las figuras por sus regiones
+     */
+    private JButton btnOrdenarRegiones;
+
+    /**
+     * Lista que contiene las fichas del rompecabezas
+     */
+    private JList listaFichas;
+
+    /**
+     * JScrollPane que contiene la lista de las figuras del rompecabezas
+     */
+    private JScrollPane scroll;
+
+    // -----------------------------------------------------------------
+    // Atributos
+    // -----------------------------------------------------------------
+
+    /**
+     * Clase principal de la interfaz gráfica
+     */
+    private InterfazRompecabezas principal;
+
+    // -----------------------------------------------------------------
+    // Constructores
+    // -----------------------------------------------------------------
+
+    /**
+     * Método constructor de la clase
+     * @param interfaz Clase principal de la interfaz gráfica
+     */
+    public PanelOrdenamientoFichas( InterfazRompecabezas interfaz )
+<span class="nc" id="L108">    {</span>
+<span class="nc" id="L109">        principal = interfaz;</span>
+<span class="nc" id="L110">        setLayout( new GridBagLayout( ) );</span>
+<span class="nc" id="L111">        GridBagConstraints constraint = null;</span>
+
+        TitledBorder titulo;
+<span class="nc" id="L114">        titulo = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder( EtchedBorder.LOWERED ), &quot;Controles de Fichas&quot; );</span>
+<span class="nc" id="L115">        titulo.setTitleJustification( TitledBorder.LEFT );</span>
+<span class="nc" id="L116">        setBorder( titulo );</span>
+
+<span class="nc" id="L118">        btnOrdenarColumnas = new JButton( &quot;Ordenar por Columnas&quot; );</span>
+<span class="nc" id="L119">        constraint = new GridBagConstraints( );</span>
+<span class="nc" id="L120">        constraint.gridx = 0;</span>
+<span class="nc" id="L121">        constraint.gridy = 0;</span>
+<span class="nc" id="L122">        constraint.insets = new Insets( 5, 0, 5, 10 );</span>
+<span class="nc" id="L123">        constraint.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L124">        btnOrdenarColumnas.setActionCommand( ACCION_ORDENAR_COLUMNAS );</span>
+<span class="nc" id="L125">        btnOrdenarColumnas.addActionListener( this );</span>
+<span class="nc" id="L126">        btnOrdenarColumnas.setEnabled( false );</span>
+<span class="nc" id="L127">        add( btnOrdenarColumnas, constraint );</span>
+
+<span class="nc" id="L129">        btnOrdenarFilas = new JButton( &quot;Ordenar por Filas&quot; );</span>
+<span class="nc" id="L130">        constraint = new GridBagConstraints( );</span>
+<span class="nc" id="L131">        constraint.gridx = 0;</span>
+<span class="nc" id="L132">        constraint.gridy = 1;</span>
+<span class="nc" id="L133">        constraint.insets = new Insets( 5, 0, 5, 10 );</span>
+<span class="nc" id="L134">        constraint.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L135">        btnOrdenarFilas.setActionCommand( ACCION_ORDENAR_FILAS );</span>
+<span class="nc" id="L136">        btnOrdenarFilas.addActionListener( this );</span>
+<span class="nc" id="L137">        btnOrdenarFilas.setEnabled( false );</span>
+<span class="nc" id="L138">        add( btnOrdenarFilas, constraint );</span>
+
+<span class="nc" id="L140">        btnOrdenarRegiones = new JButton( &quot;Ordenar por Regiones&quot; );</span>
+<span class="nc" id="L141">        constraint = new GridBagConstraints( );</span>
+<span class="nc" id="L142">        constraint.gridx = 0;</span>
+<span class="nc" id="L143">        constraint.gridy = 2;</span>
+<span class="nc" id="L144">        constraint.insets = new Insets( 5, 0, 5, 10 );</span>
+<span class="nc" id="L145">        constraint.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L146">        btnOrdenarRegiones.addActionListener( this );</span>
+<span class="nc" id="L147">        btnOrdenarRegiones.setActionCommand( ACCION_ORDENAR_REGIONES );</span>
+<span class="nc" id="L148">        btnOrdenarRegiones.setEnabled( false );</span>
+<span class="nc" id="L149">        add( btnOrdenarRegiones, constraint );</span>
+
+<span class="nc" id="L151">        listaFichas = new JList( );</span>
+
+<span class="nc" id="L153">        constraint = new GridBagConstraints( );</span>
+<span class="nc" id="L154">        constraint.gridx = 1;</span>
+<span class="nc" id="L155">        constraint.gridy = 0;</span>
+<span class="nc" id="L156">        constraint.gridheight = 5;</span>
+<span class="nc" id="L157">        constraint.gridwidth = 10;</span>
+<span class="nc" id="L158">        constraint.weighty = 1.0;</span>
+<span class="nc" id="L159">        constraint.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L160">        scroll = new JScrollPane( listaFichas );</span>
+<span class="nc" id="L161">        listaFichas.addListSelectionListener( this );</span>
+<span class="nc" id="L162">        add( scroll, constraint );</span>
+<span class="nc" id="L163">    }</span>
+
+
+    /**
+     * Método que actualiza la lista de fichas
+     * @param fichas Nueva lista de las fichas que se quiere mostrar. Diferente de null
+     */
+    public void actualizarListaFichas( ArrayList&lt;Ficha&gt; fichas )
+    {
+<span class="nc" id="L172">        listaFichas.setListData( fichas.toArray( ) );</span>
+<span class="nc" id="L173">        scroll.setPreferredSize( new Dimension( 400, 50 ) );</span>
+<span class="nc" id="L174">    }</span>
+
+    /**
+     * Método que activa los botones de acciones sobre las fichas
+     */
+    public void activarBotones( )
+    {
+<span class="nc" id="L181">        btnOrdenarColumnas.setEnabled( true );</span>
+<span class="nc" id="L182">        btnOrdenarFilas.setEnabled( true );</span>
+<span class="nc" id="L183">        btnOrdenarRegiones.setEnabled( true );</span>
+<span class="nc" id="L184">    }</span>
+
+    /**
+     * Método que desactiva los botones de acciones sobre las fichas
+     */
+    public void desactivarBotones( )
+    {
+<span class="nc" id="L191">        btnOrdenarColumnas.setEnabled( false );</span>
+<span class="nc" id="L192">        btnOrdenarFilas.setEnabled( false );</span>
+<span class="nc" id="L193">        btnOrdenarRegiones.setEnabled( false );</span>
+<span class="nc" id="L194">    }</span>
+
+    /**
+     * Método que es llamado cuando se cambia lo que esta seleccionado en la lista. Al seleccionarse una ficha de la lista esta se resalta.
+     */
+    public void valueChanged( ListSelectionEvent e )
+    {
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if( listaFichas.getSelectedValue( ) != null )</span>
+        {
+<span class="nc" id="L203">            Ficha ficha = ( Ficha )listaFichas.getSelectedValue( );</span>
+<span class="nc" id="L204">            principal.resaltarFicha( ficha );</span>
+
+        }
+<span class="nc" id="L207">    }</span>
+
+    /**
+     * Manejo de los eventos de los botones
+     * @param e Acción que generó el evento.
+     */
+
+    public void actionPerformed( ActionEvent e )
+    {
+<span class="nc bnc" id="L216" title="All 2 branches missed.">        if( ACCION_ORDENAR_COLUMNAS.equals( e.getActionCommand( ) ) )</span>
+        {
+<span class="nc" id="L218">            principal.ordenarFichasPorColumnas( );</span>
+
+        }
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        else if( ACCION_ORDENAR_FILAS.equals( e.getActionCommand( ) ) )</span>
+        {
+<span class="nc" id="L223">            principal.ordenarFichasPorFilas( );</span>
+
+        }
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        else if( ACCION_ORDENAR_REGIONES.equals( e.getActionCommand( ) ) )</span>
+        {
+<span class="nc" id="L228">            principal.ordenarFichasPorRegiones( );</span>
+
+        }
+<span class="nc" id="L231">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImagenFicha.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rompecabezas3</a> &gt; <a href="index.source.html" class="el_package">rompecabezas.interfaz</a> &gt; <span class="el_source">ImagenFicha.java</span></div><h1>ImagenFicha.java</h1><pre class="source lang-java linenums">/**
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * $Id$
+ * Universidad de los Andes (Bogotá - Colombia)
+ * Departamento de Ingeniería de Sistemas y Computación 
+ * Licenciado bajo el esquema Academic Free License version 2.1 
+ *
+ * Proyecto Cupi2 (http://cupi2.uniandes.edu.co)
+ * Ejercicio: n7_rompecabezas
+ * Autor: Manuel Muñoz - Oct 6, 2006
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+
+package rompecabezas.interfaz;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.accessibility.Accessible;
+import javax.swing.JComponent;
+
+/**
+ * Clase que representa gráficamente una ficha del rompecabezas
+ */
+public class ImagenFicha extends JComponent implements MouseListener, FocusListener, Accessible
+{
+
+    // -----------------------------------------------------------------
+    // Atributos
+    // -----------------------------------------------------------------
+
+    /**
+     * Imagen que quiere ser mostrada
+     */
+    public Imagen imagen;
+
+    /**
+     * Antigua posición en x
+     */
+    private int oldX;
+
+    /**
+     * Antigua posición en Y
+     */
+    private int oldY;
+
+    // -----------------------------------------------------------------
+    // Métodos
+    // -----------------------------------------------------------------
+    
+    /**
+     * Método constructor por parámetros de la clase ImagenFicha
+     * @param imagen2 Imagen a mostrar
+     * @param alto Alto que va a tener la casilla donde puede o no ir la figura
+     * @param ancho Ancho que va a tener la casilla donde puede ir o no la figura
+     */
+    public ImagenFicha( Imagen imagen2, int ancho, int alto )
+<span class="nc" id="L63">    {</span>
+<span class="nc" id="L64">        this.imagen = imagen2;</span>
+<span class="nc" id="L65">        setFocusable( true );</span>
+<span class="nc" id="L66">        addMouseListener( this );</span>
+<span class="nc" id="L67">        addFocusListener( this );</span>
+<span class="nc" id="L68">        oldX = ancho;</span>
+<span class="nc" id="L69">        oldY = alto;</span>
+<span class="nc" id="L70">    }</span>
+
+    /**
+     * Método que es llamado cuando se envía un evento de click (presionar y soltar) con el mouse
+     */
+    public void mouseClicked( MouseEvent e )
+    {
+<span class="nc" id="L77">        requestFocusInWindow( );</span>
+<span class="nc" id="L78">    }</span>
+
+    /**
+     * Método que es llamado cuando se presiona un botón del mouse en este componente
+     */
+    public void mousePressed( MouseEvent e )
+    {
+<span class="nc" id="L85">    }</span>
+
+    /**
+     * Método que es llamando cuando se suelta el botón del mouse en este componente
+     */
+    public void mouseReleased( MouseEvent e )
+    {
+<span class="nc" id="L92">    }</span>
+
+    /**
+     * Método que es llamado cuando el mouse entra a este componente
+     */
+    public void mouseEntered( MouseEvent e )
+    {
+<span class="nc" id="L99">    }</span>
+
+    /**
+     * Método que es llamando cuando el mouse sale de este componente
+     */
+    public void mouseExited( MouseEvent e )
+    {
+<span class="nc" id="L106">    }</span>
+
+    /**
+     * Método que se llama cuando el componente tiene el foco del teclado
+     */
+    public void focusGained( FocusEvent e )
+    {
+        // Indica que el componente tiene focus con un borde rojo
+<span class="nc" id="L114">        this.repaint( );</span>
+<span class="nc" id="L115">    }</span>
+
+    /**
+     * Método que se llama cuando el componente pierde el foco del teclado
+     */
+    public void focusLost( FocusEvent e )
+    {
+        // Indica que el componente perdió el foco con un borde rojo
+<span class="nc" id="L123">        this.repaint( );</span>
+<span class="nc" id="L124">    }</span>
+
+    /**
+     * Método que es llamado para pintar el componente
+     */
+    protected void paintComponent( Graphics graphics )
+    {
+<span class="nc" id="L131">        Graphics g = graphics.create( );</span>
+
+<span class="nc" id="L133">        Image laImagen = null;</span>
+<span class="nc" id="L134">        int width = oldX;</span>
+<span class="nc" id="L135">        int height = oldY;</span>
+
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if( imagen != null )</span>
+        {
+<span class="nc" id="L139">            laImagen = imagen.obtenerImagen( );</span>
+<span class="nc" id="L140">            width = laImagen.getWidth( this );</span>
+<span class="nc" id="L141">            height = laImagen.getHeight( this );</span>
+<span class="nc" id="L142">            oldX = laImagen.getWidth( this );</span>
+<span class="nc" id="L143">            oldY = laImagen.getHeight( this );</span>
+        }
+
+<span class="nc" id="L146">        g.setColor( Color.WHITE );</span>
+<span class="nc" id="L147">        g.fillRect( 0, 0, width, height );</span>
+
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        if( imagen != null )</span>
+        {
+<span class="nc" id="L151">            g.drawImage( laImagen, 0, 0, width, height, this );</span>
+        }
+
+        // Dibuja el borde
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if( isFocusOwner( ) )</span>
+        {
+<span class="nc" id="L157">            g.setColor( Color.RED );</span>
+        }
+        else
+        {
+<span class="nc" id="L161">            g.setColor( Color.BLACK );</span>
+        }
+<span class="nc" id="L163">        g.drawRect( 0, 0, width, height );</span>
+<span class="nc" id="L164">        g.dispose( );</span>
+<span class="nc" id="L165">    }</span>
+
+    /**
+     * Revisa si el componente tiene actualmente una imagen asociada
+     * @return True si esta mostrando una imagen, false de lo contrario
+     */
+    public boolean tieneImagen( )
+    {
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if( imagen == null )</span>
+<span class="nc" id="L174">            return false;</span>
+<span class="nc" id="L175">        return true;</span>
+    }
+
+    /**
+     * Método que resalta la imagen
+     */
+    public void resaltar( )
+    {
+<span class="nc" id="L183">        this.requestFocus( );</span>
+<span class="nc" id="L184">        this.repaint( );</span>
+<span class="nc" id="L185">    }</span>
+
+    /**
+     * Método que retorna la posición de la ficha
+     * @return Entero mayor o igual a cero
+     */
+    public int obtenerPosicion( )
+    {
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if( imagen == null )</span>
+<span class="nc" id="L194">            return -1;</span>
+<span class="nc" id="L195">        return imagen.obtenerPosicion( );</span>
+    }
+
+    /**
+     * Cambia la imagen que se quiere mostrar
+     * @param imagen2 Nueva imagen a mostrar. Puede ser null
+     */
+    public void cambiarImagen( Imagen imagen2 )
+    {
+<span class="nc" id="L204">        imagen = imagen2;</span>
+<span class="nc" id="L205">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
